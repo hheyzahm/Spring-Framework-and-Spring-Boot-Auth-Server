@@ -1,0 +1,13 @@
+package springFrameworkSpringBoot.Spring6AuthServer;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringFrameworkAndSpringBootAuthServerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringFrameworkAndSpringBootAuthServerApplication.class, args);
+    }
+
+}
