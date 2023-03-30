@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,6 +34,7 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
+
 /**
  * @Created 30 03 2023 - 12:51 PM
  * @Author Hazeem Hassan
@@ -46,7 +48,7 @@ public class SecurityConfigS22 {
             throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
+                .oidc(Customizer.withDefaults());    // Enable OpenID Connect 1.0
         http
                 // Redirect to the login page when not authenticated from the
                 // authorization endpoint
@@ -59,6 +61,7 @@ public class SecurityConfigS22 {
 
         return http.build();
     }
+
     //Add Default Security Filter Chain
     @Bean
     @Order(2)
@@ -74,6 +77,7 @@ public class SecurityConfigS22 {
 
         return http.build();
     }
+
     //Create User Details Service
     @Bean
     public UserDetailsService userDetailsService() {
@@ -107,6 +111,7 @@ public class SecurityConfigS22 {
 
         return new InMemoryRegisteredClientRepository(registeredClient);
     }
+
     //Create JWK Source
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
@@ -127,17 +132,21 @@ public class SecurityConfigS22 {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
             keyPair = keyPairGenerator.generateKeyPair();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }
         return keyPair;
     }
+
     //Create JwtDecoder
     @Bean
     public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
 
-
+    //Set Authorization Server Settings
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings() {
+        return AuthorizationServerSettings.builder().build();
+    }
 }
