@@ -139,4 +139,5 @@ public class SecurityConfigS22 {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
 
+
 }
